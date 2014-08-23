@@ -3,131 +3,201 @@
 	<head>
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<title>Helsinki energy use</title>
+		<title>Cosecha: plan your harvest!</title>
 		<link href='http://fonts.googleapis.com/css?family=PT+Mono' rel='stylesheet' type='text/css'>
 		<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 		<link href="style.css" media="screen" rel="stylesheet" type="text/css" />
 		<script type="text/javascript" src="js/calculate.js"></script>
 		<link type="text/css" href="css/ui-lightness/jquery-ui-1.8.18.custom.css" rel="stylesheet" />
 		<script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
-		<script type="text/javascript" src="js/jquery-ui-1.8.18.custom.min.js"></script>
+	    <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.1/themes/smoothness/jquery-ui.css">
+	    <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+	    <script src="http://code.jquery.com/ui/1.11.1/jquery-ui.js"></script>
 		<script type="text/javascript" src="js/jqueryipad.js"></script>
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<script type="text/javascript">
-		 $(document).ready(init);
-	
-			$('#slider').draggable();
-			$(function() {
-				$("#slider").slider({
-					value : 588549,
-					min : 400000,
-					max : 1000000,
-					step : 1,
-					slide : function(event, ui) {
-						$("#population").val(ui.value);
-						calc();
-					}
-				});
-				$("#population").val("" + $("#slider").slider("value"));
-			});
-			$('#slider2').draggable();
-			$(function() {
-				$("#slider2").slider({
-					value : 10196,
-					min : 2000,
-					max : 20000,
-					step : 1,
-					slide : function(event, ui) {
-						$("#renewable").val(ui.value);
-						calc();
-					}
-				});
-				$("#renewable").val("" + $("#slider2").slider("value"));
-			});
-			$('#slider3').draggable();
-			$(function() {
-				$("#slider3").slider({
-					value : 55,
-					min : 1,
-					max : 99,
-					step : 1,
-					slide : function(event, ui) {
-						$("#transit").val(ui.value);
-						calc();
-					}
-				});
-				$("#transit").val("" + $("#slider3").slider("value"));
-			});
-			$('#slider4').draggable();
-			$(function() {
-				$("#slider4").slider({
-					value : 89,
-					min : 10,
-					max : 100,
-					step : 1,
-					slide : function(event, ui) {
-						$("#light").val(ui.value);
-						calc();
-					}
-				});
-				$("#light").val("" + $("#slider4").slider("value"));
-			});
-			$('#slider5').draggable();
-			$(function() {
-				$("#slider5").slider({
-					value : 311,
-					min : 1,
-					max : 416,
-					step : 1,
-					slide : function(event, ui) {
-						$("#el").val(ui.value);
-						calc();
-					}
-				});
-				$("#el").val("" + $("#slider5").slider("value"));
-			});
+		<script>
+		
+		var potatoes_distance = 0.75, potatoes_yield = 2.2, potatoes_price = 27/2; 
+		var beets_distance = 0.75, beets_yield = 2.2, beets_price = 27/2; 
+		var lettuce_distance = 0.4, lettuce_yield = 0.72, lettuce_price = 90/2;
+		var squash_distance = 1, squash_yield = 3.5, squash_price = 38/2;
+		var carrots_distance = 0.5, carrots_yield = 1.7, carrots_price = 26/2;
+		var onions_distance = 0.4, onions_yield = 1.7, onions_price = 26/2;
+		
+		
+		function refreshSwatch() {
+			var total_area = $("#size").val();
+		    var potatoes = $( "#potatoes_amount" ).slider( "value" ),
+		      beets = $( "#beets_amount" ).slider( "value" ),
+			  onions = $( "#onions_amount" ).slider( "value" ),
+			  squash = $( "#squash_amount" ).slider( "value" ),
+			  carrots = $( "#carrots_amount" ).slider( "value" ),
+		      lettuce = $( "#lettuce_amount" ).slider( "value" );
+			  
+			  //Calculate total area
+			  area_used=potatoes+beets+lettuce+carrots+squash+onions;
+	   		  document.getElementById('area').innerHTML = area_used + "%";
+			  
+			  // Calculate potatoes
+			  potatoes_area=(total_area*potatoes)/100;
+			  potatoes_rowmeters = Math.sqrt(potatoes_area)*(Math.sqrt(potatoes_area)/potatoes_distance);
+			  potatoes_weight = potatoes_rowmeters*potatoes_yield;
+			  potatoes_money = potatoes_weight*potatoes_price;
+  			  document.getElementById('potatoes_m').innerHTML = Math.round(potatoes_rowmeters) + " row m";
+  			  document.getElementById('potatoes_kg').innerHTML = Math.round(potatoes_weight) + " kg";
+  			  document.getElementById('potatoes_kr').innerHTML = Math.round(potatoes_money) + " kr";
+			  
+
+			  beets_area=(total_area*beets)/100;
+			  beets_rowmeters = Math.sqrt(beets_area)*(Math.sqrt(beets_area)/beets_distance);
+			  beets_weight = beets_rowmeters*beets_yield;
+			  beets_money = beets_weight*beets_price;			  
+			  document.getElementById('beets_m').innerHTML = Math.round(beets_rowmeters) + " row m";
+  			  document.getElementById('beets_kg').innerHTML = Math.round(beets_weight) + " kg";
+  			  document.getElementById('beets_kr').innerHTML = Math.round(beets_money) + " kr";
+
+			  lettuce_area=(total_area*lettuce)/100;
+			  lettuce_rowmeters = Math.sqrt(lettuce_area)*(Math.sqrt(lettuce_area)/lettuce_distance);
+			  lettuce_weight = lettuce_rowmeters*lettuce_yield;
+			  lettuce_money = lettuce_weight*lettuce_price;			 
+			  document.getElementById('lettuce_m').innerHTML = Math.round(lettuce_rowmeters) + "row m";
+  			  document.getElementById('lettuce_kg').innerHTML = Math.round(lettuce_weight) + " kg";
+  			  document.getElementById('lettuce_kr').innerHTML = Math.round(lettuce_money) + " kr";
+			  
+			  squash_area=(total_area*squash)/100;
+			  squash_rowmeters = Math.sqrt(squash_area)*(Math.sqrt(squash_area)/squash_distance);
+			  squash_weight = squash_rowmeters*squash_yield;
+			  squash_money = squash_weight*squash_price;			 
+			  document.getElementById('squash_m').innerHTML = Math.round(squash_rowmeters) + " row m";
+  			  document.getElementById('squash_kg').innerHTML = Math.round(squash_weight) + " kg";
+  			  document.getElementById('squash_kr').innerHTML = Math.round(squash_money) + " kr";
+			  
+			  onions_area=(total_area*onions)/100;
+			  onions_rowmeters = Math.sqrt(onions_area)*(Math.sqrt(onions_area)/onions_distance);
+			  onions_weight = onions_rowmeters*onions_yield;
+			  onions_money = onions_weight*onions_price;			 
+			  document.getElementById('onions_m').innerHTML = Math.round(onions_rowmeters) + " row m";
+  			  document.getElementById('onions_kg').innerHTML = Math.round(onions_weight) + " kg";
+  			  document.getElementById('onions_kr').innerHTML = Math.round(onions_money) + " kr";
+			  
+			  carrots_area=(total_area*carrots)/100;
+			  carrots_rowmeters = Math.sqrt(carrots_area)*(Math.sqrt(carrots_area)/carrots_distance);
+			  carrots_weight = carrots_rowmeters*carrots_yield;
+			  carrots_money = carrots_weight*carrots_price;			 
+			  document.getElementById('carrots_m').innerHTML = Math.round(carrots_rowmeters) + " row m";
+  			  document.getElementById('carrots_kg').innerHTML = Math.round(carrots_weight) + " kg";
+  			  document.getElementById('carrots_kr').innerHTML = Math.round(carrots_money) + " kr";
+			  
+			  total_weight= potatoes_weight + beets_weight + lettuce_weight + carrots_weight + squash_weight + onions_weight;
+	   		  document.getElementById('yield').innerHTML = Math.round(total_weight) + " kg";
+			  
+			  total_money = potatoes_money + beets_money + lettuce_money + carrots_money + squash_money + onions_money;
+	   		  document.getElementById('money').innerHTML = Math.round(total_money) + " kr";
+			  
+		  }
+		 
+		 
+		  $(function() {
+		    $( "#potatoes_amount, #beets_amount, #lettuce_amount, #carrots_amount, #squash_amount, #onions_amount" ).slider({
+		      orientation: "horizontal",
+		      range: "min",
+		      max: 50,
+		      value: 0,
+		      slide: refreshSwatch,
+		      change: refreshSwatch
+		    });
+		    $( "#potatoes_amount" ).slider( "value", 0 );
+		    $( "#beets_amount" ).slider( "value", 0 );
+		    $( "#lettuce_amount" ).slider( "value", 0 );
+		    $( "#onions_amount" ).slider( "value", 0 );
+		    $( "#squash_amount" ).slider( "value", 0 );
+		    $( "#carrots_amount" ).slider( "value", 0 );
+		  });
+		
 		</script>
 	</head>
 	<body>
 		<div id="frame">
-			<div id="column_left">
-				<div class="details" id="d1">
-					<div id="circle_private" class="circle"></div>
-					<div id="text_device" class="details_text"></div>
-				</div>
-				<div class="details" id="d2">
-					<div id="circle_public" class="circle"></div>
-					<div id="text_public" class="details_text"></div>
-				</div>
-				<div class="details" id="d3">
-					<div id="circle_transport" class="circle"></div>
-					<div id="text_transport" class="details_text"></div>
-				</div>
-
+			
+			<div id="logo">
+				<img src="beet.png" height="120px">
+				<img src="logo.png" height="130px"/>
 			</div>
-			<div id="column_right">
-				<h1>Helsinki City Total CO2</h1>
-				<div id="bignr">Total 2010</div>
-				<p><small>Play with future Scenario</small></p>					
-				<div id="slider">
-					<p><input type="text" id="population" style="border:0px; font-size:14px; font-weight:bold; width:60px" />Inhabitants in Helsinki</p>
-		I		</div>				
-				<div id="slider2">
-					<p><input type="text" id="renewable" style="border:0px; font-size:14px; font-weight:bold; width:60px" />KWh year person at home <small>(including heating)</small></p>
+			<div id="general_data">
+				<div class="general_data_piece">
+					<p>Field size <br/><smaller>(square meters)</smaller></p>	
+					<input type="text" id="size" value="1000"><br>
 				</div>
-				<div id="slider3">
-					<p><input type="text" id="transit" style="border:0px; font-size:14px; font-weight:bold; width:50px" />% people taking public transport <small>(instead of cars)</small></p>
+				<div class="general_data_piece">
+					<p>Area used<br/><br/></p>	
+					<div id="area">0%</div>
 				</div>
-				<div id="slider4">
-					<p><input type="text" id="light" style="border:0px; font-size:14px; font-weight:bold; width:50px" /> KWh/sqm lights in commercial buildings <small>(Households: 10KWh/sqm)</small></p>
+				<div class="general_data_piece">
+					<p>Produced<br/><br/></p>
+					<div id="yield">0 kg</div>
 				</div>
-				<div id="slider5">
-					<p><input type="text" id="el" style="border:0px; font-size:14px; font-weight:bold; width:50px" /> grams CO2 per KWh electricity <small>(Max:all coal, Min:all renewable)</small></p>
-				</div>
+				<div class="general_data_piece">
+					<p>Earned<br/><br/></p>
+					<div id="money">0 kr</div>
+				</div>	
 			</div>
+		
+		<div id="vegs">
+			
+			<div id="potatoes" class="veg">
+				<div class="text_veg">Potatoes</div>
+				<div id="potatoes_amount"></div>	
+				<div id="potatoes_m" class="text_veg">0 row meters</div>
+				<div id="potatoes_kg" class="text_veg">0 kg</div>
+				<div id="potatoes_kr" class="text_veg">0 kr</div> 
+			</div>
+			
+			<div id="beetroots" class="veg">
+				<div class="text_veg">Beetroots</div>
+				<div id="beets_amount"></div>
+				<div id="beets_m" class="text_veg">0 row meters</div>
+				<div id="beets_kg" class="text_veg">0 kg</div>
+				<div id="beets_kr" class="text_veg">0 kr</div> 
+				
+			</div>
+			
+			<div id="letucce" class="veg">
+				<div class="text_veg">Letucce</div>
+				<div id="lettuce_amount"></div>
+				<div id="lettuce_m" class="text_veg">0 row meters</div>
+				<div id="lettuce_kg" class="text_veg">0 kg</div>
+				<div id="lettuce_kr" class="text_veg">0 kr</div>
+			</div>
+			
+			<div id="squash" class="veg">
+				<div class="text_veg">Squash</div>
+				<div id="squash_amount"></div>
+				<div id="squash_m" class="text_veg">0 row meters</div>
+				<div id="squash_kg" class="text_veg">0 kg</div>
+				<div id="squash_kr" class="text_veg">0 kr</div>
+			</div>
+			
+			<div id="carrots" class="veg">
+				<div class="text_veg">Carrots</div>
+				<div id="carrots_amount"></div>
+				<div id="carrots_m" class="text_veg">0 row meters</div>
+				<div id="carrots_kg" class="text_veg">0 kg</div>
+				<div id="carrots_kr" class="text_veg">0 kr</div>
+			</div>
+			
+			<div id="onions" class="veg">
+				<div class="text_veg">Onions</div>
+				<div id="onions_amount"></div>
+				<div id="onions_m" class="text_veg">0 row meters</div>
+				<div id="onions_kg" class="text_veg">0 kg</div>
+				<div id="onions_kr" class="text_veg">0 kr</div>
+			</div>
+			
+		</div>   
+			
+			
 			<div id="footer">
-					<p><a href="http://thedatahub.org/dataset/helsinki-siemens/resource/a6700ef3-5254-4a2f-bac1-b05933568287"/>Data (Siemens+Aalto)</a> | Part of the OKFestival Green Hackathon Helsinki | Coded by <a href="http://jorge.zapi.co">Jorge Zapico</a></p>
-<p><small>Disclaimer: proof of concept to show how future scenarios could be dynamic, sliders based on linear relationship</small></p>
+					<p>Coded by <a href="http://jorge.zapi.co">Jorge Zapico</a></p>
 			</div>	
 		</div>
 	</body>
