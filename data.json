@@ -1,0 +1,31 @@
+{"emissions": [
+"emission": {
+        "area": "PrivateHeating",
+	"amount": 0.538320029408860
+	},
+"emission": {
+        "area": "PrivateCooling",
+	"amount": 0.001104500000000
+	},
+"emission": {
+        "area": "PrivateCooling",
+	"amount": 0.059863900000000
+	},
+"emission": {
+        "area": "PrivateLighting",
+	"amount": 0.065165500000000
+	},
+"emission": {
+        "area": "PrivateAppliances",
+	"amount": 0.031146900000000
+	},
+"emission": {
+        "area": "PrivateIT",
+	"amount": 0.119877584836960
+	},
+"emission": {
+        "area": "PrivateOther",
+	"amount": 0.100509500000000
+	},
+    ]
+};

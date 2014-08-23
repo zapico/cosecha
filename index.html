@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<title>Helsinki energy use</title>
+		<link href='http://fonts.googleapis.com/css?family=PT+Mono' rel='stylesheet' type='text/css'>
+		<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+		<link href="style.css" media="screen" rel="stylesheet" type="text/css" />
+		<script type="text/javascript" src="js/calculate.js"></script>
+		<link type="text/css" href="css/ui-lightness/jquery-ui-1.8.18.custom.css" rel="stylesheet" />
+		<script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
+		<script type="text/javascript" src="js/jquery-ui-1.8.18.custom.min.js"></script>
+		<script type="text/javascript" src="js/jqueryipad.js"></script>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<script type="text/javascript">
+		 $(document).ready(init);
+	
+			$('#slider').draggable();
+			$(function() {
+				$("#slider").slider({
+					value : 588549,
+					min : 400000,
+					max : 1000000,
+					step : 1,
+					slide : function(event, ui) {
+						$("#population").val(ui.value);
+						calc();
+					}
+				});
+				$("#population").val("" + $("#slider").slider("value"));
+			});
+			$('#slider2').draggable();
+			$(function() {
+				$("#slider2").slider({
+					value : 10196,
+					min : 2000,
+					max : 20000,
+					step : 1,
+					slide : function(event, ui) {
+						$("#renewable").val(ui.value);
+						calc();
+					}
+				});
+				$("#renewable").val("" + $("#slider2").slider("value"));
+			});
+			$('#slider3').draggable();
+			$(function() {
+				$("#slider3").slider({
+					value : 55,
+					min : 1,
+					max : 99,
+					step : 1,
+					slide : function(event, ui) {
+						$("#transit").val(ui.value);
+						calc();
+					}
+				});
+				$("#transit").val("" + $("#slider3").slider("value"));
+			});
+			$('#slider4').draggable();
+			$(function() {
+				$("#slider4").slider({
+					value : 89,
+					min : 10,
+					max : 100,
+					step : 1,
+					slide : function(event, ui) {
+						$("#light").val(ui.value);
+						calc();
+					}
+				});
+				$("#light").val("" + $("#slider4").slider("value"));
+			});
+			$('#slider5').draggable();
+			$(function() {
+				$("#slider5").slider({
+					value : 311,
+					min : 1,
+					max : 416,
+					step : 1,
+					slide : function(event, ui) {
+						$("#el").val(ui.value);
+						calc();
+					}
+				});
+				$("#el").val("" + $("#slider5").slider("value"));
+			});
+		</script>
+	</head>
+	<body>
+		<div id="frame">
+			<div id="column_left">
+				<div class="details" id="d1">
+					<div id="circle_private" class="circle"></div>
+					<div id="text_device" class="details_text"></div>
+				</div>
+				<div class="details" id="d2">
+					<div id="circle_public" class="circle"></div>
+					<div id="text_public" class="details_text"></div>
+				</div>
+				<div class="details" id="d3">
+					<div id="circle_transport" class="circle"></div>
+					<div id="text_transport" class="details_text"></div>
+				</div>
+
+			</div>
+			<div id="column_right">
+				<h1>Helsinki City Total CO2</h1>
+				<div id="bignr">Total 2010</div>
+				<p><small>Play with future Scenario</small></p>					
+				<div id="slider">
+					<p><input type="text" id="population" style="border:0px; font-size:14px; font-weight:bold; width:60px" />Inhabitants in Helsinki</p>
+		I		</div>				
+				<div id="slider2">
+					<p><input type="text" id="renewable" style="border:0px; font-size:14px; font-weight:bold; width:60px" />KWh year person at home <small>(including heating)</small></p>
+				</div>
+				<div id="slider3">
+					<p><input type="text" id="transit" style="border:0px; font-size:14px; font-weight:bold; width:50px" />% people taking public transport <small>(instead of cars)</small></p>
+				</div>
+				<div id="slider4">
+					<p><input type="text" id="light" style="border:0px; font-size:14px; font-weight:bold; width:50px" /> KWh/sqm lights in commercial buildings <small>(Households: 10KWh/sqm)</small></p>
+				</div>
+				<div id="slider5">
+					<p><input type="text" id="el" style="border:0px; font-size:14px; font-weight:bold; width:50px" /> grams CO2 per KWh electricity <small>(Max:all coal, Min:all renewable)</small></p>
+				</div>
+			</div>
+			<div id="footer">
+					<p><a href="http://thedatahub.org/dataset/helsinki-siemens/resource/a6700ef3-5254-4a2f-bac1-b05933568287"/>Data (Siemens+Aalto)</a> | Part of the OKFestival Green Hackathon Helsinki | Coded by <a href="http://jorge.zapi.co">Jorge Zapico</a></p>
+<p><small>Disclaimer: proof of concept to show how future scenarios could be dynamic, sliders based on linear relationship</small></p>
+			</div>	
+		</div>
+	</body>
+</html>

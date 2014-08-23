@@ -1,0 +1,191 @@
+
+
+// Set a callback to run when the Google Visualization API is loaded.
+// google.setOnLoadCallback(drawChart);
+
+// Callback that creates and populates a data table,
+// instantiates the pie chart, passes in the data and
+// draws it.
+
+
+
+var PrivateHeating = 538.320029408860
+var PrivateCooling = 1.104500000000
+var PrivateLighting = 59.863900000000
+var PrivateAppliances = 65.165500000000
+var PrivateIT = 31.146900000000
+var PrivateWater = 119.877584836960
+var PrivateOther = 100.509500000000
+
+var PublicHeating = 319.370295640163
+var PublicCooling = 37.111200000000
+var PublicLighting = 242.990000000000
+var PublicAppliances = 110.450000000000
+var PublicIT	= 55.225000000000
+var PublicWater	= 78.156948885720
+var PublicOther	= 184.672400000000
+
+var Vehicle=588.781035308794
+var Bus	=86.089645571904
+var Metro =9.178612500000
+var Tram =5.606862500000
+var Trains=10.01
+var Freight=320.86
+var Lights=12.15
+
+
+function init() {
+	//Initialize
+	TotalPrivate = 0
+	TotalPrivate = PrivateHeating + PrivateCooling + PrivateLighting + PrivateAppliances + PrivateIT + PrivateOther + PrivateWater
+
+	TotalPrivate = Math.round(TotalPrivate * 100) / 100
+
+	TotalPublic = PublicHeating + PublicCooling + PublicLighting + PublicAppliances + PublicIT + PublicOther + PublicWater
+
+	TotalPublic = Math.round(TotalPublic * 100) / 100
+
+	TotalTransport = Vehicle + Bus + Metro + Tram + Trains + Freight + Lights
+
+	TotalTransport = Math.round(TotalTransport * 100) / 100
+
+	Total = TotalPrivate + TotalPublic + TotalTransport
+	
+	TotalComma = Total * 1000
+	TotalComma = TotalComma.toString()
+	TotalComma = TotalComma.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")
+
+
+	// update the page to show the results
+	document.getElementById('bignr').innerHTML = "<h1><big>" + TotalComma + "</big><br/> tons CO2</h1><p><b>" + Math.round(Total*100000/588549)/100 + "tons per capita</b></p><p><b>2010 Baseline</b></p>"
+	// create percentages
+	/*var p_user = (e_user * 100) / e_total_joule
+	var p_network = (e_network * 100) / e_total_joule
+	var p_serv = (e_serv * 100) / e_total_joule
+	var p_acc_net = (e_acc_net * 100) / e_total_joule*/ 
+	// create circles
+	var max_size = 500000
+	var circle_private = Math.round(Math.sqrt(max_size * (TotalPrivate / 3600) / 3.1416))
+	margin = (100 - circle_private) / 2
+	margintop = (100 - circle_private) / 3
+	document.getElementById('circle_private').innerHTML = '<div style="width:' + circle_private + 'px; height:' + circle_private + 'px;margin-left:' + margin + 'px;margin-top:' + margintop + 'px; background:#AC703D; border-radius: 150px;"></div>'
+	document.getElementById('text_device').innerHTML = "Households"
+
+	var max_size = 500000
+	var circle_public = Math.round(Math.sqrt(max_size * (TotalPublic / 3600) / 3.1416))
+	margin = (100 - circle_public) / 2
+	margintop = (100 - circle_public) / 3
+	document.getElementById('circle_public').innerHTML = '<div style="width:' + circle_public + 'px; height:' + circle_public + 'px;margin-left:' + margin + 'px;margin-top:' + margintop + 'px; background:#9D9754; border-radius: 150px;"></div>'
+	document.getElementById('text_public').innerHTML = "Public and commercial buildings"
+
+	var max_size = 500000	
+	var circle_transport = Math.round(Math.sqrt(max_size * (TotalTransport / 3600) / 3.1416))
+	margin = (100 - circle_transport) / 2
+	margintop = (100 - circle_transport) / 3
+	document.getElementById('circle_transport').innerHTML = '<div style="width:' + circle_transport + 'px; height:' + circle_transport + 'px;margin-left:' + margin + 'px;margin-top:' + margintop + 'px; background:#B7A6AD; border-radius: 250px;"></div>'
+	document.getElementById('text_transport').innerHTML = "Transport"
+/*
+	var max_size = 100000	
+	var circle_1 = Math.round(Math.sqrt(max_size * (PrivateHeating*1000 / 3600) / 3.1416))
+	margin = (100 - circle_1) / 2
+	margintop = (100 - circle_1) / 3
+	document.getElementById('circle_1').innerHTML = '<div style="width:' + circle_1 + 'px; height:' + circle_1 + 'px;margin-left:' + margin + 'px;margin-top:' + margintop + 'px; background:#C7E2CC; -moz-border-radius: 150px; -webkit-border-radius:150px;"></div>'
+	document.getElementById('text_1').innerHTML = "Private Heating"
+
+/*
+	var circle_network = Math.round(Math.sqrt(max_size * (e_network / 3600) / 3.1416))
+	margin = (100 - circle_network) / 2
+	margintop = (100 - circle_network) / 3
+	document.getElementById('circle_infra').innerHTML = '<div style="width:' + circle_network + 'px; height:' + circle_network + 'px; margin-left:' + margin + 'px;margin-top:' + margintop + 'px; background:#51A1B7; -moz-border-radius: 80px; -webkit-border-radius:80px;"></div>'
+	document.getElementById('text_infra').innerHTML = "<h2>Internet<br/><br/></h2></h2><p>" + Math.round(e_network / 36) / 100 + " Wh</p><p> " + Math.round(p_network) + " &#37;</p>"
+
+	var circle_serv = Math.round(Math.sqrt(max_size * (e_serv / 3600) / 3.1416))
+	margin = (100 - circle_serv) / 2
+	margintop = (100 - circle_serv) / 3
+	document.getElementById('circle_server').innerHTML = '<div style="width:' + circle_serv + 'px; height:' + circle_serv + 'px;margin-left:' + margin + 'px;margin-top:' + margintop + 'px; background:#4998CE; -moz-border-radius: 80px; -webkit-border-radius:80px;"></div>'
+	document.getElementById('text_server').innerHTML = "<h2>servers<br/><br/></h2><p>" + Math.round(e_serv / 36) / 100 + " Wh</p><p> " + Math.round(p_serv) + " &#37;</p>"
+
+	var circle_acc_net = Math.round(Math.sqrt(max_size * (e_acc_net / 3600) / 3.1416))
+	margin = (100 - circle_acc_net) / 2
+	margintop = (100 - circle_acc_net) / 3
+	if(connectionType == "3G mobile"){
+		connectionType = "3G mobile connection"
+	}
+	document.getElementById('circle_access').innerHTML = '<div style="width:' + circle_acc_net + 'px; height:' + circle_acc_net + 'px;margin-left:' + margin + 'px;margin-top:' + margintop + 'px; background:#A3C3D8; -moz-border-radius: 40px; -webkit-border-radius:80px;"></div>'
+	document.getElementById('text_access').innerHTML = "<h2>" + connectionType + "</h2><p>" + Math.round(e_acc_net / 36) / 100 + " Wh</p><p> " + Math.round(p_acc_net) + " &#37;</p>"
+
+	//calcLightBulbsAndCarbon(e_total_joule, durationSecs)
+	currentSelection = selection
+	setBlurb()*/
+}
+function calc() {
+	population = 588549
+	population = document.getElementById('population').value
+	initpopulation = 588549	
+	var renewable = document.getElementById('renewable').value
+	initrenewable = 10196	
+	var transit = document.getElementById('transit').value
+	inittransit = 45	
+	var light = document.getElementById('light').value
+	initlight = 89	
+	var elco2 = document.getElementById('el').value	
+	initel = 311		
+	
+	//Initialize
+	PrivateEl = ((PrivateCooling + PrivateLighting + PrivateAppliances + PrivateIT + PrivateOther)*elco2)/initel 
+	TotalPrivate = PrivateHeating + PrivateWater + PrivateEl
+	TotalPrivate = Math.round(TotalPrivate * 100) / 100
+	TotalPrivate = TotalPrivate*population/initpopulation
+	TotalPrivate = TotalPrivate*renewable/initrenewable
+	
+	newLights = (light*PublicLighting)/initlight
+
+	PublicEl =  ((PublicCooling + newLights + PublicAppliances + PublicIT + PublicOther)*elco2)/initel
+	TotalPublic = PublicHeating + PublicWater + PublicEl
+	TotalPublic = Math.round(TotalPublic * 100) / 100
+	TotalPublic = TotalPublic/initpopulation
+	TotalPublic = TotalPublic*population
+
+
+	newVehicle = Vehicle*(100-transit)
+	newVehicle = newVehicle/inittransit
+	if (newVehicle < 0.0000){
+		newVehicle = 0
+	}
+	TransportEL = ((Metro + Tram + Trains + Lights)*elco2/initel)
+	TotalTransport = newVehicle + Bus + TransportEL + Freight
+	TotalTransport = Math.round(TotalTransport * 100) / 100
+	TotalTransport = TotalTransport*population/initpopulation
+
+	Total = TotalPrivate + TotalPublic + TotalTransport
+	Total = Math.round(Total * 100) / 100
+
+	TotalComma = Total * 1000
+	TotalComma = Math.round(TotalComma)
+	TotalComma = TotalComma.toString()
+	TotalComma = TotalComma.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")
+
+	Change = ((Total*1000)-2976650)*100/2976650
+
+	// update the page to show the results
+	document.getElementById('bignr').innerHTML = "<h1><big>" + TotalComma + "</big><br/> tons CO2</h1><p><b>" + Math.round(Total*100000/population)/100 + " tons per capita</b></p><p><b>" + Math.round(Change) + " % Change from 2010 baseline</b></p>"
+
+	// create circles
+	var max_size = 500000
+	var circle_private = Math.round(Math.sqrt(max_size * (TotalPrivate / 3600) / 3.1416))
+	margin = (100 - circle_private) / 2
+	margintop = (100 - circle_private) / 3
+	document.getElementById('circle_private').innerHTML = '<div style="width:' + circle_private + 'px; height:' + circle_private + 'px;margin-left:' + margin + 'px;margin-top:' + margintop + 'px; background:#AC703D; border-radius: 150px;"></div>'
+
+	var max_size = 500000
+	var circle_public = Math.round(Math.sqrt(max_size * (TotalPublic / 3600) / 3.1416))
+	margin = (100 - circle_public) / 2
+	margintop = (100 - circle_public) / 3
+	document.getElementById('circle_public').innerHTML = '<div style="width:' + circle_public + 'px; height:' + circle_public + 'px;margin-left:' + margin + 'px;margin-top:' + margintop + 'px; background:#9D9754; border-radius: 150px;"></div>'
+
+	var max_size = 500000	
+	var circle_transport = Math.round(Math.sqrt(max_size * (TotalTransport / 3600) / 3.1416))
+	margin = (100 - circle_transport) / 2
+	margintop = (100 - circle_transport) / 3
+	document.getElementById('circle_transport').innerHTML = '<div style="width:' + circle_transport + 'px; height:' + circle_transport + 'px;margin-left:' + margin + 'px;margin-top:' + margintop + 'px; background:#B7A6AD; border-radius: 250px;"></div>'
+}
